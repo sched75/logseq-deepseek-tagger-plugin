@@ -38,5 +38,12 @@ l24 -19 -52 -51 c-43 -42 -51 -56 -51 -87 0 -49 19 -76 83 -117 28 -18 129
 -20z"/>
 <path d="M1914 1896 c-10 -26 4 -48 28 -44 17 2 23 10 23 28 0 18 -6 26 -23
 28 -13 2 -25 -3 -28 -12z"/>
+
+<!-- Ajout du dièse (#) en bas à gauche -->
+<!-- Les coordonnées x et y sont relatives au système de coordonnées transformé. -->
+<!-- y=300 le place vers le bas car l'axe y est inversé par le scale(0.1, -0.1) -->
+<!-- x=300 le place vers la gauche. -->
+<!-- Vous devrez peut-être ajuster x, y et font-size. -->
+<text x="2250" y="-250" font-family="Arial, sans-serif" font-size="2250" fill="#808080" font-weight="bold" transform="scale(1,-1)">#</text>
 </g>
 </svg>
