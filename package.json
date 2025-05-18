@@ -1,6 +1,6 @@
 {
   "name": "logseq-deepseek-tagger-plugin",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Suggère des tags pour le bloc actuel en utilisant l'API DeepSeek.",
   "main": "index.js",
   "scripts": {
