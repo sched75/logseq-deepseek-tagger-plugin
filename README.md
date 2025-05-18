@@ -1,7 +1,7 @@
 # Logseq DeepSeek Tagger Plugin
 
-[![Version du Marketplace](https://img.shields.io/logseq-plugin/version/VOTRE_PLUGIN_ID_ICI)](https://logseq.github.io/plugins/marketplace/VOTRE_PLUGIN_ID_ICI)
-[![Téléchargements du Marketplace](https://img.shields.io/logseq-plugin/downloads/VOTRE_PLUGIN_ID_ICI)](https://logseq.github.io/plugins/marketplace/VOTRE_PLUGIN_ID_ICI)
+[![Version du Marketplace](https://img.shields.io/logseq-plugin/version/logseq-deepseek-tagger-1-0-0)](https://logseq.github.io/plugins/marketplace/logseq-deepseek-tagger-1-0-0)
+[![Téléchargements du Marketplace](https://img.shields.io/logseq-plugin/downloads/VOTRE_PLUGIN_ID_ICI)](https://logseq.github.io/plugins/marketplace/logseq-deepseek-tagger-1-0-0)
 <!-- Remplacez VOTRE_PLUGIN_ID_ICI par l'ID réel de votre plugin une fois publié -->
 
 Boostez votre organisation dans Logseq en générant automatiquement des tags pertinents pour vos notes grâce à la puissance de l'IA de DeepSeek ! Ce plugin analyse le contenu de vos blocs ou de vos pages et suggère des tags contextuels, en y ajoutant également des tags temporels utiles.
