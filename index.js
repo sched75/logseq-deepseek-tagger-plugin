@@ -1,17 +1,17 @@
 // index.js
 
-const DEEPSEEK_API_ENDPOINT = 'https://api.deepseek.com/v1/chat/completions'; // Vérifiez l'endpoint exact
+const DEEPSEEK_API_ENDPOINT = 'https://api.deepseek.com/v1/chat/completions'; // Verify the exact endpoint
 
 /**
- * Fonction pour appeler l'API DeepSeek et obtenir des suggestions de tags.
- * @param {string} textContent Le contenu du bloc pour lequel générer des tags.
- * @param {string} apiKey La clé API DeepSeek.
- * @returns {Promise<string[] | null>} Un tableau de tags suggérés par DeepSeek, ou null en cas d'erreur.
+ * Function to call the DeepSeek API and get tag suggestions.
+ * @param {string} textContent The block content for which to generate tags.
+ * @param {string} apiKey The DeepSeek API key.
+ * @returns {Promise<string[] | null>} An array of tags suggested by DeepSeek, or null in case of error.
  */
 async function fetchTagsFromDeepSeek(textContent, apiKey) {
   if (!apiKey || apiKey.trim() === "") {
-    console.error("Clé API DeepSeek non configurée.");
-    logseq.App.showMsg("Veuillez configurer votre clé API DeepSeek dans les paramètres du plugin.", "error");
+    console.error("DeepSeek API key not configured.");
+    logseq.App.showMsg("Please configure your DeepSeek API key in the plugin settings.", "error");
     return null;
   }
 
@@ -21,14 +21,14 @@ async function fetchTagsFromDeepSeek(textContent, apiKey) {
   const day = String(today.getDate()).padStart(2, '0');
   const currentDateString = `${year}-${month}-${day}`;
 
-  let promptTemplate = `Analyse le texte suivant et suggère 3 à 10 mots-clés ou concepts pertinents de un ou deux mots qui pourraient servir de tags. Retourne-les sous forme de liste séparée par des virgules, sans aucune autre introduction ni explication, chaque tag est donné en majuscule. Par exemple: "TECHNOLOGIE, INTELLIGENCE ARTIFICIELLE, FUTUR".
-TU DOIS OBLIGATOIREMENT AJOUTER aux tags proposés, l'année (sur quatre chiffres), le mois (en Français et en majuscules), le mois (en français et en majuscules) avec l'année (e.g. FEVRIER 2025), le trimestre avec l'année (e.g. T1 2025), le quadrimestre avec l'année (e.g. Q1 2025), le semestre avec l'année (e.g. S1 2025). Les tags temporels doivent aussi être en majuscules.
-Texte: "{TEXTE_DU_BLOC}"
-Date pour référence temporelle: "${currentDateString}"
-Tags suggérés:`;
+  let promptTemplate = `Analyze the following text and suggest 3 to 10 relevant keywords or concepts (one or two words) that could serve as tags. Return them as a comma-separated list, without any introduction or explanation, each tag should be in uppercase. For example: "TECHNOLOGY, ARTIFICIAL INTELLIGENCE, FUTURE".
+YOU MUST ABSOLUTELY ADD to the proposed tags: the year (four digits), the month (in French and uppercase), the month (in French and uppercase) with the year (e.g. FEBRUARY 2025), the quarter with the year (e.g. Q1 2025), the quadrimester with the year (e.g. Q1 2025), the semester with the year (e.g. S1 2025). Temporal tags must also be in uppercase.
+Text: "{BLOCK_TEXT}"
+Date for temporal reference: "${currentDateString}"
+Suggested tags:`;
 
   const escapedTextContent = textContent.replace(/"/g, '\\"');
-  const finalPrompt = promptTemplate.replace("{TEXTE_DU_BLOC}", escapedTextContent);
+  const finalPrompt = promptTemplate.replace("{BLOCK_TEXT}", escapedTextContent);
 
   try {
     const response = await fetch(DEEPSEEK_API_ENDPOINT, {
@@ -49,8 +49,8 @@ Tags suggérés:`;
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ message: response.statusText }));
-      console.error("Erreur API DeepSeek:", response.status, errorData, "Prompt envoyé:", finalPrompt);
-      logseq.App.showMsg(`Erreur de l'API DeepSeek: ${errorData.error?.message || response.statusText}`, "error");
+      console.error("DeepSeek API error:", response.status, errorData, "Sent prompt:", finalPrompt);
+      logseq.App.showMsg(`DeepSeek API error: ${errorData.error?.message || response.statusText}`, "error");
       return null;
     }
 
@@ -62,44 +62,44 @@ Tags suggérés:`;
                                 .map(tag => tag.trim().toUpperCase())
                                 .filter(tag => tag.length > 0);
     } else {
-      console.error("Réponse inattendue de DeepSeek:", data, "Prompt envoyé:", finalPrompt);
-      logseq.App.showMsg("Format de réponse inattendu de DeepSeek.", "warning");
+      console.error("Unexpected response from DeepSeek:", data, "Sent prompt:", finalPrompt);
+      logseq.App.showMsg("Unexpected response format from DeepSeek.", "warning");
       return null;
     }
   } catch (error) {
-    console.error("Erreur lors de l'appel à DeepSeek:", error, "Prompt envoyé:", finalPrompt);
-    logseq.App.showMsg(`Erreur de connexion à DeepSeek: ${error.message}`, "error");
+    console.error("Error calling DeepSeek:", error, "Sent prompt:", finalPrompt);
+    logseq.App.showMsg(`Connection error to DeepSeek: ${error.message}`, "error");
     return null;
   }
 }
 
 /**
- * Point d'entrée principal du plugin.
+ * Main plugin entry point.
  */
 function main() {
-  console.log("Plugin DeepSeek Tagger (Complet) chargé !");
+  console.log("DeepSeek Tagger (Complete) plugin loaded!");
 
   const settingsSchema = [
     {
       key: "deepseekApiKey",
       type: "string",
-      title: "Clé API DeepSeek",
-      description: "Entrez votre clé API DeepSeek. Elle sera stockée localement.",
+      title: "DeepSeek API Key",
+      description: "Enter your DeepSeek API key. It will be stored locally.",
       default: "",
     }
   ];
   logseq.useSettingsSchema(settingsSchema);
 
-  // --- Helper: Fonction pour insérer ou mettre à jour le bloc de tags ENFANT ---
+  // --- Helper: Function to insert or update the tags CHILD block ---
   async function insertOrUpdateTagsChildBlock(parentBlockUUID, tagsArray) {
     if (!tagsArray || tagsArray.length === 0) {
-      logseq.App.showMsg("Aucun tag à insérer.", "info");
+      logseq.App.showMsg("No tags to insert.", "info");
       return;
     }
-    // S'assurer de l'unicité et du formatage MAJUSCULES avant de joindre
+    // Ensure uniqueness and uppercase formatting before joining
     const uniqueTags = [...new Set(tagsArray.map(tag => tag.trim().toUpperCase()))].filter(tag => tag.length > 0);
     if (uniqueTags.length === 0) {
-        logseq.App.showMsg("Aucun tag valide à insérer après nettoyage.", "info");
+        logseq.App.showMsg("No valid tags to insert after cleanup.", "info");
         return;
     }
     const tagsStringForBlock = uniqueTags.join(", ");
@@ -109,96 +109,92 @@ function main() {
 
     if (parentBlockWithChildren && parentBlockWithChildren.children && parentBlockWithChildren.children.length > 0) {
       tagsChildBlock = parentBlockWithChildren.children.find(child =>
-        child.content && child.content.toUpperCase().startsWith("TAGS::") // Recherche insensible à la casse
+        child.content && child.content.toUpperCase().startsWith("TAGS::") // Case-insensitive search
       );
     }
 
     if (tagsChildBlock) {
       await logseq.Editor.updateBlock(tagsChildBlock.uuid, `tags:: ${tagsStringForBlock}`);
-      logseq.App.showMsg("Tags mis à jour dans le bloc enfant !", "success");
+      logseq.App.showMsg("Tags updated in child block!", "success");
     } else {
       await logseq.Editor.insertBlock(parentBlockUUID, `tags:: ${tagsStringForBlock}`, { sibling: false, before: false });
-      logseq.App.showMsg("Tags ajoutés dans un nouveau bloc enfant !", "success");
+      logseq.App.showMsg("Tags added in a new child block!", "success");
     }
   }
 
-  // --- Commande /tags (pour le bloc actuel, utilise un enfant) ---
+  // --- /tags command (for current block, uses a child) ---
   logseq.Editor.registerSlashCommand(
     'tags',
     async (e) => {
-      logseq.App.showMsg("Génération des tags pour le bloc...", "info", { timeout: 25000 });
+      logseq.App.showMsg("Generating tags for the block...", "info", { timeout: 25000 });
       const apiKey = logseq.settings.deepseekApiKey;
       if (!apiKey || apiKey.trim() === "") {
-        logseq.App.showMsg("Clé API DeepSeek non configurée.", "error"); return;
+        logseq.App.showMsg("DeepSeek API key not configured.", "error"); return;
       }
       const currentBlock = await logseq.Editor.getBlock(e.uuid);
       if (!currentBlock) {
-        logseq.App.showMsg("Impossible d'obtenir le bloc actuel.", "warning"); return;
+        logseq.App.showMsg("Unable to get current block.", "warning"); return;
       }
       let contentForAI = currentBlock.content.split('\n').filter(line => !line.trim().match(/^.+::/)).join('\n').trim();
       if (!contentForAI) {
-        logseq.App.showMsg("Le bloc est vide (ou ne contient que des propriétés).", "warning"); return;
+        logseq.App.showMsg("The block is empty (or only contains properties).", "warning"); return;
       }
       const allTags = await fetchTagsFromDeepSeek(contentForAI, apiKey);
       if (allTags) {
         await insertOrUpdateTagsChildBlock(currentBlock.uuid, allTags);
       } else {
-        // Le message d'erreur spécifique a déjà été affiché par fetchTagsFromDeepSeek
-        // logseq.App.showMsg("Aucun tag n'a pu être généré pour le bloc.", "warning");
+        // Specific error message already displayed by fetchTagsFromDeepSeek
+        // logseq.App.showMsg("No tags could be generated for the block.", "warning");
       }
     }
   );
-  console.log("Commande /tags (bloc) enregistrée.");
+  console.log("/tags (block) command registered.");
 
-  // --- Commande /tagpage (pour la page actuelle, nouveau bloc en bas) ---
+  // --- /tagpage command (for current page, new block at bottom) ---
   logseq.Editor.registerSlashCommand(
     'tagpage',
     async () => {
-      logseq.App.showMsg("Génération des tags pour la page...", "info", { timeout: 45000 });
+      logseq.App.showMsg("Generating tags for the page...", "info", { timeout: 45000 });
       const apiKey = logseq.settings.deepseekApiKey;
       if (!apiKey || apiKey.trim() === "") {
-        logseq.App.showMsg("Clé API DeepSeek non configurée.", "error"); return;
+        logseq.App.showMsg("DeepSeek API key not configured.", "error"); return;
       }
 
       const currentPage = await logseq.Editor.getCurrentPage();
       if (!currentPage || !currentPage.name) {
-        logseq.App.showMsg("Impossible de déterminer la page actuelle.", "warning"); return;
+        logseq.App.showMsg("Unable to determine current page.", "warning"); return;
       }
 
       const pageBlocks = await logseq.Editor.getPageBlocksTree(currentPage.name);
       if (!pageBlocks || pageBlocks.length === 0) {
-        logseq.App.showMsg("La page est vide ou n'a pas de blocs.", "info"); return;
+        logseq.App.showMsg("The page is empty or has no blocks.", "info"); return;
       }
 
       let pageContent = "";
       function extractContent(blocks) {
         for (const block of blocks) {
-          if (block.content) {
-            const lines = block.content.split('\n');
-            const relevantContent = lines
-              .filter(line => !line.trim().match(/^.+::/i) && !line.trim().toUpperCase().startsWith("TAGS::"))
-              .join('\n');
-            if (relevantContent.trim()) {
-                pageContent += relevantContent.trim() + "\n\n";
-            }
+          if (block.content && block.content.trim()) { // Take all non-empty content
+            pageContent += block.content.trim() + "\n\n"; // Add all block content
+            console.log("Block content added:", block.content.trim()); // For debugging
           }
-          // Optionnel : Récursion pour enfants (non activé pour l'instant)
-          // if (block.children && block.children.length > 0) {
-          //   extractContent(block.children);
-          // }
+          // Uncomment this if you want to test with children too:
+          if (block.children && block.children.length > 0) {
+            console.log("Extracting children of block:", block.uuid);
+            extractContent(block.children); // Test with recursion
+          }
         }
       }
       extractContent(pageBlocks);
       pageContent = pageContent.trim();
 
       if (!pageContent) {
-        logseq.App.showMsg("Aucun contenu textuel pertinent trouvé sur la page.", "info"); return;
+        logseq.App.showMsg("No relevant textual content found on the page.", "info"); return;
       }
 
       const MAX_CONTENT_LENGTH = 15000;
       if (pageContent.length > MAX_CONTENT_LENGTH) {
-        pageContent = pageContent.substring(0, MAX_CONTENT_LENGTH) + "\n[... contenu tronqué ...]";
-        logseq.App.showMsg("Contenu de la page tronqué pour l'analyse des tags.", "info", {timeout: 5000});
+        pageContent = pageContent.substring(0, MAX_CONTENT_LENGTH) + "\n[... truncated content ...]";
+        logseq.App.showMsg("Page content truncated for tag analysis.", "info", {timeout: 5000});
       }
 
       const allTagsArray = await fetchTagsFromDeepSeek(pageContent, apiKey);
@@ -206,70 +202,35 @@ function main() {
       if (allTagsArray && allTagsArray.length > 0) {
         const uniqueTags = [...new Set(allTagsArray.map(tag => tag.trim().toUpperCase()))].filter(tag => tag.length > 0);
         if (uniqueTags.length === 0) {
-            logseq.App.showMsg("Aucun tag valide à insérer après nettoyage.", "info"); return;
+            logseq.App.showMsg("No valid tags to insert after cleanup.", "info"); return;
         }
         const tagsStringForBlock = uniqueTags.join(", ");
-        const newBlockContent = `Page Tags:: ${tagsStringForBlock}`; // Préfixe pour clarté
+        const newBlockContent = `tags:: ${tagsStringForBlock}`; // Prefix for clarity
 
         const lastRootBlock = pageBlocks[pageBlocks.length - 1];
         if (lastRootBlock && lastRootBlock.uuid) {
             await logseq.Editor.insertBlock(lastRootBlock.uuid, newBlockContent, { sibling: true, before: false });
-            logseq.App.showMsg("Tags de la page ajoutés dans un nouveau bloc en bas de page !", "success");
+            logseq.App.showMsg("Page tags added in a new block at the bottom of the page!", "success");
         } else {
-            // Fallback si lastRootBlock n'est pas trouvé (ex: page avec uniquement des propriétés, page vide après filtrage)
+            // Fallback if lastRootBlock not found (e.g. page with only properties, empty page after filtering)
             try {
                  await logseq.Editor.insertBatchBlock([{
                     pageName: currentPage.name,
                     content: newBlockContent
-                }], { sibling: false }); // sibling: false par rapport à la page signifie enfant direct de la page
-                 logseq.App.showMsg("Tags de la page ajoutés dans un nouveau bloc (méthode de repli) !", "success");
+                }], { sibling: false }); // sibling: false relative to page means direct child of page
+                 logseq.App.showMsg("Page tags added in a new block (fallback method)!", "success");
             } catch (batchError) {
-                console.error("Erreur lors de l'insertion en batch pour tagpage:", batchError);
-                logseq.App.showMsg("Erreur lors de l'ajout des tags de page.", "error");
+                console.error("Error during batch insert for tagpage:", batchError);
+                logseq.App.showMsg("Error adding page tags.", "error");
             }
         }
       } else {
-        // Message d'erreur déjà géré par fetchTagsFromDeepSeek ou si allTagsArray est vide
+        // Error message already handled by fetchTagsFromDeepSeek or if allTagsArray is empty
       }
     }
   );
-  console.log("Commande /tagpage enregistrée.");
-
-  // --- Commande /tagselect (pour la sélection actuelle, nouveau bloc après bloc courant) ---
-  logseq.Editor.registerSlashCommand(
-    'tagselect',
-    async (e) => {
-      logseq.App.showMsg("Génération des tags pour la sélection...", "info", { timeout: 25000 });
-      const apiKey = logseq.settings.deepseekApiKey;
-      if (!apiKey || apiKey.trim() === "") {
-        logseq.App.showMsg("Clé API DeepSeek non configurée.", "error"); return;
-      }
-
-      const selection = await logseq.Editor.getEditingCursorSelection();
-      if (!selection || !selection.text || selection.text.trim() === "") {
-        logseq.App.showMsg("Aucune sélection de texte trouvée ou la sélection est vide.", "warning"); return;
-      }
-
-      const selectedText = selection.text.trim();
-      const allTagsArray = await fetchTagsFromDeepSeek(selectedText, apiKey);
-
-      if (allTagsArray && allTagsArray.length > 0) {
-        const uniqueTags = [...new Set(allTagsArray.map(tag => tag.trim().toUpperCase()))].filter(tag => tag.length > 0);
-         if (uniqueTags.length === 0) {
-            logseq.App.showMsg("Aucun tag valide à insérer après nettoyage.", "info"); return;
-        }
-        const tagsStringForBlock = uniqueTags.join(", ");
-        const newBlockContent = `Selection Tags:: ${tagsStringForBlock}`; // Préfixe pour clarté
-
-        await logseq.Editor.insertBlock(e.uuid, newBlockContent, { sibling: true, before: false });
-        logseq.App.showMsg("Tags de la sélection ajoutés dans un nouveau bloc !", "success");
-      } else {
-        // Message d'erreur déjà géré par fetchTagsFromDeepSeek ou si allTagsArray est vide
-      }
-    }
-  );
-  console.log("Commande /tagselect enregistrée.");
+  console.log("/tagpage command registered.");
 }
 
-// Démarre le plugin
+// Start the plugin
 logseq.ready(main).catch(console.error);
