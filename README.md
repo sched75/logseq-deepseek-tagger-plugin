@@ -1,102 +1,93 @@
 # Logseq DeepSeek Tagger Plugin
 
-[![Version du Marketplace](https://img.shields.io/logseq-plugin/version/logseq-deepseek-tagger-1-0-0)](https://logseq.github.io/plugins/marketplace/logseq-deepseek-tagger-1-0-0)
-[![Téléchargements du Marketplace](https://img.shields.io/logseq-plugin/downloads/VOTRE_PLUGIN_ID_ICI)](https://logseq.github.io/plugins/marketplace/logseq-deepseek-tagger-1-0-0)
-<!-- Remplacez VOTRE_PLUGIN_ID_ICI par l'ID réel de votre plugin une fois publié -->
+[![Marketplace Version](https://img.shields.io/logseq-plugin/version/logseq-deepseek-tagger-1-0-0)](https://logseq.github.io/plugins/marketplace/logseq-deepseek-tagger-1-0-0)
+[![Marketplace Downloads](https://img.shields.io/logseq-plugin/downloads/logseq-deepseek-tagger-1-0-0)](https://logseq.github.io/plugins/marketplace/logseq-deepseek-tagger-1-0-0)
 
-Boostez votre organisation dans Logseq en générant automatiquement des tags pertinents pour vos notes grâce à la puissance de l'IA de DeepSeek ! Ce plugin analyse le contenu de vos blocs ou de vos pages et suggère des tags contextuels, en y ajoutant également des tags temporels utiles.
+Enhance your Logseq organization by automatically generating relevant tags for your notes using the power of DeepSeek's AI! This plugin analyzes your block or page content and suggests contextual tags, while also adding useful temporal tags.
 
-## Fonctionnalités
+## Features
 
-*   **Tagging intelligent par IA** : Utilise l'API DeepSeek pour analyser votre texte et proposer des tags pertinents.
-*   **Tags temporels automatiques** : Ajoute automatiquement des tags pour l'année, le mois, le mois-année, le trimestre-année, le quadrimestre-année et le semestre-année en cours.
-*   **Trois modes de tagging :**
-    *   `/tags` : Analyse le bloc de texte actuel et ajoute les tags dans un bloc enfant `tags:: ...`.
-    *   `/tagpage` : Analyse le contenu textuel de tous les blocs de la page actuelle et ajoute les tags dans un nouveau bloc `Page Tags:: ...` en bas de la page.
-*   **Configuration facile** : Entrez simplement votre clé API DeepSeek dans les paramètres du plugin.
-*   **Formatage personnalisable** : Les tags générés sont en MAJUSCULES et formatés avec des virgules pour une intégration parfaite avec la propriété `tags::` de Logseq.
+* **AI-Powered Smart Tagging**: Uses the DeepSeek API to analyze your text and suggest relevant tags.
+* **Automatic Temporal Tags**: Automatically adds tags for the current year, month, month-year, quarter-year, quadrimester-year, and semester-year.
+* **Three Tagging Modes**:
+  * `/tags`: Analyzes the current text block and adds tags in a child `tags:: ...` block.
+  * `/tagpage`: Analyzes the textual content of all blocks on the current page and adds tags in a new `Page Tags:: ...` block at the bottom of the page.
+* **Easy Configuration**: Simply enter your DeepSeek API key in the plugin settings.
+* **Customizable Formatting**: Generated tags are in UPPERCASE and comma-formatted for seamless integration with Logseq's `tags::` property.
 
-## Prérequis
+## Requirements
 
-*   Un compte DeepSeek et une clé API valide. Vous pouvez obtenir une clé API sur [le site de DeepSeek](https://platform.deepseek.com/) (vérifiez le lien exact).
-*   Logseq version X.Y.Z ou supérieure (spécifiez la version minimale si vous la connaissez).
+* A DeepSeek account and valid API key. You can get an API key on the [DeepSeek website](https://platform.deepseek.com/).
+* Logseq version 0.10.9 or higher (specify minimum version if known).
 
 ## Installation
 
-### Depuis le Marketplace Logseq (Recommandé)
+### From Logseq Marketplace (Recommended)
 
-1.  Ouvrez Logseq.
-2.  Cliquez sur les trois points (`...`) en haut à droite, puis allez dans `Plugins` (ou `Ctrl+Shift+P` / `Cmd+Shift+P` et cherchez `Plugins`).
-3.  Cliquez sur l'onglet `Marketplace`.
-4.  Recherchez "DeepSeek Tagger" (ou le nom que vous lui donnez).
-5.  Cliquez sur "Installer".
+1. Open Logseq.
+2. Click the three dots (`...`) in the top right, then go to `Plugins` (or `Ctrl+Shift+P` / `Cmd+Shift+P` and search for `Plugins`).
+3. Click the `Marketplace` tab.
+4. Search for "DeepSeek Tagger" (or whatever name you give it).
+5. Click "Install".
 
-### Manuellement (pour le développement ou si non disponible sur le marketplace)
+### Manually (for development or if not available on marketplace)
 
-1.  Téléchargez la dernière release du plugin depuis la [page des releases GitHub](https://github.com/VOTRE_NOM_UTILISATEUR/VOTRE_REPO_PLUGIN/releases) (remplacez par votre lien).
-2.  Décompressez le fichier `.zip` téléchargé.
-3.  Dans Logseq, activez le "Mode développeur" dans `Paramètres` -> `Avancé`.
-4.  Allez dans `Plugins`, cliquez sur "Charger le plugin non empaqueté", et sélectionnez le dossier du plugin que vous venez de décompresser.
+1. Download the latest plugin release from the [GitHub releases page](https://github.com/sched75/logseq-deepseek-tagger-plugin/releases).
+2. Extract the downloaded `.zip` file.
+3. In Logseq, enable "Developer Mode" in `Settings` -> `Advanced`.
+4. Go to `Plugins`, click "Load unpacked plugin", and select the plugin folder you just extracted.
 
 ## Configuration
 
-1.  Après avoir installé le plugin, allez dans la section `Plugins` de Logseq.
-2.  Trouvez "DeepSeek Tagger" dans la liste et cliquez sur l'icône d'engrenage (⚙️) pour ouvrir ses paramètres.
-3.  Entrez votre **Clé API DeepSeek** dans le champ prévu à cet effet.
-    *   Votre clé API est stockée localement par Logseq et n'est jamais partagée ailleurs.
-4.  Les modifications sont sauvegardées automatiquement.
+1. After installing the plugin, go to the `Plugins` section in Logseq.
+2. Find "DeepSeek Tagger" in the list and click the gear icon (⚙️) to open its settings.
+3. Enter your **DeepSeek API Key** in the designated field.
+   * Your API key is stored locally by Logseq and never shared elsewhere.
+4. Changes are saved automatically.
 
-## Comment utiliser
+![image](saisie%20de%20la%20clef%20deepseek.gif)
 
-Une fois votre clé API configurée, vous pouvez utiliser les commandes slash suivantes dans n'importe quel bloc :
+## How to Use
 
-### 1. Tagger le bloc actuel : `/tags`
+Once your API key is configured, you can use the following slash commands in any block:
 
-*   Tapez `/tags` dans un bloc contenant du texte.
-*   Appuyez sur `Entrée`.
-*   Le plugin analysera le contenu de ce bloc et ajoutera un bloc enfant contenant `tags:: TAG1, TAG2, ANNEE, MOIS, ...`. Si un bloc enfant `tags::` existe déjà, il sera mis à jour.
+### 1. Tag Current Block: `/tags`
 
-**(Exemple de capture d'écran ou GIF pour /tags)**
+* Type `/tags` in a block containing text.
+* Press `Enter`.
+* The plugin will analyze this block's content and add a child block containing `tags:: TAG1, TAG2, YEAR, MONTH, ...`. If a child `tags::` block already exists, it will be updated.
 
-### 2. Tagger la page entière : `/tagpage`
+![image](tag%20page.gif)
 
-*   Sur n'importe quelle page, tapez `/tagpage` dans un bloc (le contenu du bloc où vous tapez n'est pas utilisé, seule la page compte).
-*   Appuyez sur `Entrée`.
-*   Le plugin analysera le contenu textuel de tous les blocs de la page actuelle.
-*   Un nouveau bloc de premier niveau sera ajouté en bas de la page, contenant `Page Tags:: TAG1, TAG2, ANNEE, MOIS, ...`.
+### 2. Tag Entire Page: `/tagpage`
 
-**(Exemple de capture d'écran ou GIF pour /tagpage)**
+* On any page, type `/tagpage` in a block (the content of the block where you type isn't used, only the page matters).
+* Press `Enter`.
+* The plugin will analyze the textual content of all blocks on the current page.
+* A new top-level block will be added at the bottom of the page containing `Page Tags:: TAG1, TAG2, YEAR, MONTH, ...`.
 
-### 3. Tagger une sélection : `/tagselect`
+![image](tag%20page.gif)
 
-*   Sélectionnez une portion de texte (cela peut s'étendre sur un ou plusieurs blocs).
-*   Dans un bloc (généralement celui où se termine votre sélection ou un nouveau bloc à proximité), tapez `/tagselect`.
-*   Appuyez sur `Entrée`.
-*   Le plugin analysera le texte que vous avez sélectionné.
-*   Un nouveau bloc sera inséré *après* le bloc où vous avez tapé la commande `/tagselect`, contenant `Selection Tags:: TAG1, TAG2, ANNEE, MOIS, ...`.
+## DeepSeek Prompt Format (for reference)
 
-**(Exemple de capture d'écran ou GIF pour /tagselect)**
-
-## Format du prompt DeepSeek utilisé (pour information)
-
-Le plugin utilise le prompt suivant pour interagir avec l'API DeepSeek (avec une température basse pour des résultats plus déterministes) :
+The plugin uses the following prompt to interact with the DeepSeek API (with low temperature for more deterministic results):
 """
-Analyse le texte suivant et suggère 3 à 10 mots-clés ou concepts pertinents de un ou deux mots qui pourraient servir de tags. Retourne-les sous forme de liste séparée par des virgules, sans aucune autre introduction ni explication, chaque tag est donné en majuscule. Par exemple: "TECHNOLOGIE, INTELLIGENCE ARTIFICIELLE, FUTUR".
-TU DOIS OBLIGATOIREMENT AJOUTER aux tags proposés, l'année (sur quatre chiffres), le mois (en Français et en majuscules), le mois (en français et en majuscules) avec l'année (e.g. FEVRIER 2025), le trimestre avec l'année (e.g. T1 2025), le quadrimestre avec l'année (e.g. Q1 2025), le semestre avec l'année (e.g. S1 2025). Les tags temporels doivent aussi être en majuscules.
-Texte: "{TEXTE_DU_BLOC}"
-Date pour référence temporelle: "{DATE_ACTUELLE_YYYY-MM-DD}"
-Tags suggérés:
+Analyze the following text and suggest 3 to 10 relevant keywords or concepts (one or two words) that could serve as tags. Return them as a comma-separated list, without any introduction or explanation, each tag should be in uppercase. For example: "TECHNOLOGY, ARTIFICIAL INTELLIGENCE, FUTURE".
+YOU MUST ABSOLUTELY ADD to the proposed tags: the year (four digits), the month (in French and uppercase), the month (in French and uppercase) with the year (e.g. FEBRUARY 2025), the quarter with the year (e.g. Q1 2025), the quadrimester with the year (e.g. Q1 2025), the semester with the year (e.g. S1 2025). Temporal tags must also be in uppercase.
+Text: "{BLOCK_TEXT}"
+Date for temporal reference: "{CURRENT_DATE_YYYY-MM-DD}"
+Suggested tags:
 """
 
-## Problèmes et Contributions
+## Issues and Contributions
 
-*   Pour signaler un bug ou suggérer une fonctionnalité, veuillez ouvrir une "Issue" sur le [dépôt GitHub du plugin](https://github.com/VOTRE_NOM_UTILISATEUR/VOTRE_REPO_PLUGIN/issues) (remplacez par votre lien).
-*   Les contributions sont les bienvenues ! Si vous souhaitez contribuer au code, veuillez forker le dépôt et soumettre une Pull Request.
+* To report a bug or suggest a feature, please open an "Issue" on the [plugin's GitHub repository](https://github.com/YOUR_USERNAME/YOUR_PLUGIN_REPO/issues) (replace with your link).
+* Contributions are welcome! If you'd like to contribute code, please fork the repository and submit a Pull Request.
 
-## Licence
+## License
 
-Ce plugin est distribué sous la licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+This plugin is distributed under the MIT license. See the `LICENSE` file for details.
 
 ---
 
-Fait avec ❤️ pour la communauté Logseq.
+Made with ❤️ for the Logseq community.
