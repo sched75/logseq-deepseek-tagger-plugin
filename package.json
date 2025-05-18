@@ -1,0 +1,19 @@
+{
+  "name": "logseq-deepseek-tagger-plugin",
+  "version": "0.1.0",
+  "description": "Suggère des tags pour le bloc actuel en utilisant l'API DeepSeek.",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Pas de build nécessaire pour ce plugin simple'"
+  },
+  "author": "Votre Nom",
+  "license": "MIT",
+  "logseq": {
+    "id": "logseq-deepseek-tagger-unique-id",
+    "title": "DeepSeek Tagger",
+    "icon": "./icon.svg"
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.15"
+  }
+}
